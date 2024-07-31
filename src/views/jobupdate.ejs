@@ -1,0 +1,146 @@
+<div class="container mx-auto">
+  <div class="max-w-xl mx-auto bg-white rounded-lg shadow-2xl mt-5 p-8">
+    <h1 class="text-3xl font-bold mb-6 text-center text-gray-700 underline underline-offset-8">Update Job</h1>
+    <form id="updateJobForm" action="/jobs/<%= jobData.id %>" method="POST">
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2" for="jobCategory">Select Job Category</label>
+        <select id="jobCategory" name="jobCategory" class="block w-full p-2 border rounded-lg">
+          <option>Select Job Category</option>
+          <option value="Tech" <%= jobData.jobCategory === 'Tech' ? 'selected' : '' %>>Tech</option>
+          <option value="Non-Tech" <%= jobData.jobCategory === 'Non-Tech' ? 'selected' : '' %>>Non-Tech</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2" for="jobDesignation">Select Job Designation</label>
+        <select id="jobDesignation" name="jobDesignation" class="block w-full p-2 border rounded-lg">
+          <option>Select Job Designation</option>
+          <option value="Software Engineer" <%= jobData.jobDesignation === 'Software Engineer' ? 'selected' : '' %>>Software Engineer</option>
+          <option value="Data Scientist" <%= jobData.jobDesignation === 'Data Scientist' ? 'selected' : '' %>>Data Scientist</option>
+          <option value="Product Manager" <%= jobData.jobDesignation === 'Product Manager' ? 'selected' : '' %>>Product Manager</option>
+          <option value="Designer" <%= jobData.jobDesignation === 'Designer' ? 'selected' : '' %>>Designer</option>
+          <option value="HR Manager" <%= jobData.jobDesignation === 'HR Manager' ? 'selected' : '' %>>HR Manager</option>
+          <option value="Sales Executive" <%= jobData.jobDesignation === 'Sales Executive' ? 'selected' : '' %>>Sales Executive</option>
+          <option value="Marketing Manager" <%= jobData.jobDesignation === 'Marketing Manager' ? 'selected' : '' %>>Marketing Manager</option>
+          <option value="Content Writer" <%= jobData.jobDesignation === 'Content Writer' ? 'selected' : '' %>>Content Writer</option>
+          <option value="QA Engineer" <%= jobData.jobDesignation === 'QA Engineer' ? 'selected' : '' %>>QA Engineer</option>
+          <option value="DevOps Engineer" <%= jobData.jobDesignation === 'DevOps Engineer' ? 'selected' : '' %>>DevOps Engineer</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2" for="jobLocation">Enter Job Location</label>
+        <input
+          type="text"
+          id="jobLocation"
+          name="jobLocation"
+          class="block w-full p-2 border rounded-lg"
+          placeholder="Enter job location"
+          value="<%= jobData.jobLocation %>"
+        />
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2" for="companyName">Company Name</label>
+        <input
+          type="text"
+          id="companyName"
+          name="companyName"
+          class="block w-full p-2 border rounded-lg"
+          placeholder="Company Name"
+          value="<%= jobData.companyName %>"
+        />
+      </div>
+      <div class="flex mb-4 space-x-4">
+        <div class="flex-1">
+          <label class="block text-gray-700 mb-2" for="salary">Enter Salary</label>
+          <input
+            type="text"
+            id="salary"
+            name="salary"
+            class="block w-full p-2 border rounded-lg"
+            placeholder="Enter salary"
+            value="<%= jobData.salary %>"
+          />
+        </div>
+        <div class="flex-1">
+          <label class="block text-gray-700 mb-2" for="totalPositions">Total Positions</label>
+          <input
+            type="number"
+            id="totalPositions"
+            name="totalPositions"
+            class="block w-full p-2 border rounded-lg"
+            placeholder="Total Positions"
+            value="<%= jobData.totalPositions %>"
+          />
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2" for="skills">Select Skills Required for This Job</label>
+        <select id="skills" name="skills" class="block w-full p-2 border rounded-lg" multiple>
+          <option value="React" <%= jobData.skills.includes('React') ? 'selected' : '' %>>React</option>
+          <option value="NodeJs" <%= jobData.skills.includes('NodeJs') ? 'selected' : '' %>>NodeJs</option>
+          <option value="Angular" <%= jobData.skills.includes('Angular') ? 'selected' : '' %>>Angular</option>
+          <option value="Python" <%= jobData.skills.includes('Python') ? 'selected' : '' %>>Python</option>
+          <option value="Java" <%= jobData.skills.includes('Java') ? 'selected' : '' %>>Java</option>
+          <option value="Ruby on Rails" <%= jobData.skills.includes('Ruby on Rails') ? 'selected' : '' %>>Ruby on Rails</option>
+          <option value="PHP" <%= jobData.skills.includes('PHP') ? 'selected' : '' %>>PHP</option>
+          <option value="JavaScript" <%= jobData.skills.includes('JavaScript') ? 'selected' : '' %>>JavaScript</option>
+          <option value="HTML/CSS" <%= jobData.skills.includes('HTML/CSS') ? 'selected' : '' %>>HTML/CSS</option>
+          <option value="SQL" <%= jobData.skills.includes('SQL') ? 'selected' : '' %>>SQL</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2" for="applyBy">Apply By</label>
+        <input
+          type="text"
+          id="applyBy"
+          name="applyBy"
+          class="block w-full p-2 border rounded-lg"
+          value="<%= jobData.applyBy %>"
+        />
+      </div>
+      <div>
+        <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600" type="submit">
+          Update
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById('updateJobForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const form = event.target;
+    const formData = new FormData(form);
+    const data = {};
+
+    formData.forEach((value, key) => {
+      if (key === 'skills') {
+        if (!data[key]) data[key] = [];
+        data[key].push(value);
+      } else {
+        data[key] = value;
+      }
+    });
+
+    fetch(form.action, {
+      method: 'PUT', // Use PUT method
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data), // Send data as JSON
+    })
+    .then(response => response.json())
+    .then(result => {
+      if (result.success) {
+        alert('Job updated successfully');
+        window.location.href = '/jobs'; // Redirect to home or any other page
+      } else {
+        alert('Failed to update job: ' + result.message);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  });
+</script>

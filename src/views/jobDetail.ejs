@@ -1,0 +1,174 @@
+<style>
+  .location {
+    margin-top: 10px;
+  }
+</style>
+
+<div class="container mx-auto p-4 border w-[80%]">
+  <!-- Header Section -->
+  <div class="relative w-full h-[400px] sm:h-[320px]">
+    <div class="absolute inset-0 opacity-70 h-[320px]">
+      <img
+        src="/assets/cup.jpg"
+        alt="Hero page image"
+        class="object-cover object-center w-full h-full contrast-125 drop-shadow-md sm:blur-sm"
+      />
+    </div>
+  </div>
+
+  <!-- Job Posting Section -->
+  <div class="bg-white rounded-lg shadow-lg p-6 mt-5">
+    <h2 class="font-roboto text-3xl" style="font-size: xx-large">
+      <span class="text-red-500"><%= jobData.jobDesignation %></span>
+      <span class="text-green-600" style="color: green">
+        opportunity in <%= jobData.jobLocation %> at
+      </span>
+      <span class="text-cyan-500"><%= jobData.companyName %></span>
+    </h2>
+    <div class="flex justify-between items-center mb-4 mt-5 w-[100%]">
+      <div
+        class="flex justify-between items-center bg-green-600 rounded-lg shadow-lg"
+        style="padding: 8px; background-color: rgba(37, 168, 37, 0.707)"
+      >
+        <span class="text-lg text-white font-roboto p-5">Actively hiring</span>
+      </div>
+      <% if(userEmail){%>
+      <div>
+        <a href="/edit-job/<%= jobData.id %>">
+          <i
+            class="fa-regular fa-pen-to-square text-xl hover:text-cyan-500 cursor-pointer"
+            style="color: blue"
+          ></i>
+        </a>
+        <a href="#" id="deleteJobButton" class="hover:text-red-200">
+          <i
+            class="fa-solid fa-trash text-xl"
+            style="color: red; margin-left: 10px"
+          ></i>
+        </a>
+      </div>
+      <% } %>
+    </div>
+    <div class="mb-4">
+      <h3 class="text-xl font-semibold"><%= jobData.companyName %></h3>
+      <p class="text-gray-600">
+        <%= jobData.jobCategory %>
+        <span class="text-green-500" style="color: green"
+          ><%= jobData.jobDesignation %></span
+        >
+      </p>
+      <div
+        class="ml-5"
+        style="margin-left: 13px; margin-top: 10px; padding: 5px"
+      >
+        <div class="location flex items-center">
+          <i class="fa-solid fa-location-dot" style="margin-right: 3px"></i>
+          <p class="text-gray-600 flex items-center font-roboto">
+            <%= jobData.jobLocation %>
+          </p>
+        </div>
+        <div class="location flex items-center">
+          <i
+            class="fa-solid fa-indian-rupee-sign"
+            style="margin-right: 3px"
+          ></i>
+          <p class="text-gray-600 flex items-center font-roboto">
+            <%= jobData.salary %>
+          </p>
+        </div>
+        <div class="location flex items-center">
+          <i class="fa-solid fa-hourglass" style="margin-right: 3px"></i>
+          <p class="text-gray-600 flex items-center font-roboto">
+            Apply By <%= jobData.applyBy %>
+          </p>
+        </div>
+        <div class="location flex items-center">
+          <i class="fa-solid fa-angles-left" style="margin-right: 3px"></i>
+          <p class="text-gray-600 flex items-center font-roboto">
+            Number of openings <%= jobData.totalPositions %>
+          </p>
+        </div>
+        <% if(userEmail) { %>
+
+        <div class="location flex items-center">
+          <i class="fa-solid fa-user" style="margin-right: 3px"></i>
+          <a
+            href="/applicants/<%= jobData.id %>"
+            class="flex items-center font-roboto text-red-500"
+            id="applicants"
+          >
+            Applicants <%= jobData.applicants.length %>
+          </a>
+        </div>
+
+        <% }else{%>
+        <div class="location flex items-center">
+          <i class="fa-solid fa-user" style="margin-right: 3px"></i>
+          <p
+            class="flex items-center font-roboto text-black"
+            
+          >
+            Applicants <%= jobData.applicants.length %>
+          </a>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    <div class="mb-4">
+      <div class="flex flex-wrap mt-4">
+        <% if (jobData.skills && Array.isArray(jobData.skills)) { %> <%
+        jobData.skills.forEach(function(skill) { %>
+        <span
+          class="text-xs bg-gray-100 border hover:bg-cyan-200 hover:text-black transition shadow-xl text-blue-400 py-1 px-3 rounded-full mr-2 mt-2"
+          ><%= skill.toUpperCase() %></span
+        >
+        <% }); %> <% } %>
+      </div>
+    </div>
+    <div style="margin-top: 30px" class="hover:bg-blue-500">
+      <button
+        class="text-white py-2 px-4 rounded-lg w-full"
+        style="background: blue; padding: 10px"
+        type="submit"
+        id="applyButton"
+      >
+        
+        Apply Now
+      </button>
+    </div>
+    <p class="text-gray-600 text-sm mt-4">Posted: <%= jobData.jobPosted %></p>
+  </div>
+</div>
+
+<script>
+  document.getElementById('deleteJobButton').addEventListener('click', function(event) {
+    event.preventDefault();
+    const jobId = <%= jobData.id %>;
+
+    if (confirm('Are you sure you want to delete this job?')) {
+      fetch(`/delete-job/${jobId}`, {
+        method: 'DELETE',
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          alert('Job deleted successfully');
+          window.location.href = '/jobs'; // Redirect to home or any other page
+        } else {
+          alert('Failed to delete job: ' + result.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  });
+</script>
+<script>
+  const jobId = <%= jobData.id %>;
+  const applyButton = document.getElementById('applyButton');
+  
+  applyButton.addEventListener('click', ()=>{
+    window.location.href = `/apply/${jobId}`
+  })
+  </script>

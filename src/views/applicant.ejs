@@ -1,0 +1,43 @@
+<div
+  class="w-full flex justify-center items-center containerss font-roboto mt-3"
+>
+  <div class="w-[80%]">
+    <h1
+      class="text-2xl font-semibold text-center uppercase underline underline-offset-8"
+    >
+      Applicants
+    </h1>
+    <div class="">
+      <div class="bg-white rounded-lg shadow-lg p-4">
+        <table class="min-w-full bg-white">
+          <thead>
+            <tr>
+              <th class="py-2 px-4 border-b text-left">Sr</th>
+              <th class="py-2 px-4 border-b text-left">Name</th>
+              <th class="py-2 px-4 border-b text-left">Email</th>
+              <th class="py-2 px-4 border-b text-left">Contact</th>
+              <th class="py-2 px-4 border-b text-left">Resume</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% applicants.forEach(data =>{ %>
+            <tr class="bg-gray-100">
+              <td class="py-2 px-4 border-b"><%= data.applicantid%></td>
+              <td class="py-2 px-4 border-b"><%= data.name %></td>
+              <td class="py-2 px-4 border-b"><%= data.email %></td>
+              <td class="py-2 px-4 border-b"><%= data.contact %></td>
+              <td class="py-2 px-4 border-b">
+                <button class="bg-blue-500 text-white py-1 px-4 rounded">
+                  <a href="<% data.resumepath%>">views</a>
+                </button>
+              </td>
+            </tr>
+            <% })%>
+
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="flex justify-center items-center">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8 w-[80%]">
+    <% job.forEach(function(job) { %>
+    <div class="bg-gray-50 text-black p-6 rounded-lg shadow-2xl max-w-sm">
+      <div class="flex justify-between items-center">
+        <span class="text-sm text-green-400">Actively hiring</span>
+        <span class="text-xs bg-green-500 text-white py-1 px-2 rounded-full"
+          >Hiring</span
+        >
+      </div>
+      <h2 class="text-2xl font-bold mt-2 text-gray-800 font-roboto">
+        <%= job.companyName %>
+      </h2>
+      <p class="text-blue-400">
+        <%= job.jobCategory %>
+        <span class="text-blue-500"><%= job.jobDesignation %></span>
+      </p>
+      <p class="mt-2 flex items-center text-gray-400">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5 mr-2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M17.657 16.657a4 4 0 01-5.657 0L12 16l-.343.343a4 4 0 01-5.657 0l-4-4a4 4 0 010-5.657l4-4a4 4 0 015.657 0L12 8l.343-.343a4 4 0 015.657 0l4 4a4 4 0 010 5.657l-4 4z"
+          />
+        </svg>
+        <%= job.jobLocation %>
+      </p>
+      <p class="mt-2 text-xl font-semibold text-cyan-800"><%= job.salary %></p>
+      <div class="flex flex-wrap mt-4">
+        <% if (job.skills && Array.isArray(job.skills)) { %> <%
+        job.skills.forEach(function(skill) { %>
+        <span
+          class="text-xs bg-gray-100 border hover:bg-cyan-200 hover:text-black transition shadow-xl text-blue-400 py-1 px-3 rounded-full mr-2 mt-2"
+          ><%= skill.toUpperCase() %></span
+        >
+        <% }); %> <% } %>
+      </div>
+      <a href="/jobs/<%= job.id %>">
+        <button
+          class="mt-4 bg-green-600 text-white py-2 px-4 rounded-lg w-full hover:bg-green-800"
+        >
+          View details
+        </button>
+      </a>
+    </div>
+    <% }); %>
+  </div>
+</div>
